@@ -1,0 +1,21 @@
+basePath: /
+consumes:
+- application/json
+info:
+  description: Documantation for Parking Api
+  title: of Parking api
+  version: 1.0.0
+paths:
+  /api/user:
+    get:
+      description: Returns a paking status
+      operationId: slot
+      tags:
+      - allocate
+      - the
+      - pakring
+produces:
+- applicatiom/json
+schemes:
+- http
+swagger: "2.0"

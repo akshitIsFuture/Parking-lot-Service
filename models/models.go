@@ -6,3 +6,4 @@ type ParkingDetails  struct {
 	CarId string `json:"carId"`
 	OwnerName string `json:"ownerName"`
 }
+
