@@ -52,7 +52,6 @@ func DeAllocateParkingProducer(ctx context.Context,carId string) {
 		Logger: l,
 	})
 
-
 		// each kafka message has a key and value. The key is used
 		// to decide which partition (and consequently, which broker)
 		// the message gets published on
