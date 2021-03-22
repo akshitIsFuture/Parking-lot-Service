@@ -20,9 +20,7 @@ import (
     "fmt"
     "log"
     "net/http" // used to access the request and response object of the api
-    "os"       // used to read the environment variable
     "Parking-lot-Service/models"
-    "github.com/joho/godotenv" // package used to read the .env file
     _ "github.com/lib/pq"      // postgres golang driver
     "github.com/gorilla/mux" // used to get the params from the route
     "context"
@@ -38,15 +36,11 @@ type response struct {
 
 // create connection with postgres db
 func createConnection() *sql.DB {
-    // load .env file
-    err := godotenv.Load(".env")
 
-    if err != nil {
-        log.Fatalf("Error loading .env file")
-    }
+    POSTGRES_URL := "host=db port=5432 user=postgres password=root dbname=postgres sslmode=disable"
 
     // Open the connection
-    db, err := sql.Open("postgres", os.Getenv("POSTGRES_URL"))
+    db, err := sql.Open("postgres", POSTGRES_URL )
 
     if err != nil {
         panic(err)
