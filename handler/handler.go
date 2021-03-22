@@ -63,8 +63,6 @@ func createConnection() *sql.DB {
     // return the connection
     return db
 }
-// swagger:route PUT /api/user allocate the pakring slot
-// Returns a paking status
 
 // GetAllUser will return all the users
 func GetFreePakingSlot(w http.ResponseWriter, r *http.Request) {
@@ -73,26 +71,26 @@ func GetFreePakingSlot(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Access-Control-Allow-Methods", "PUT")
     w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
     // get all the users in the db
-    // create a new context
-//	ctx := context.Background()
 	// produce messages in a new go routine, since
 	// both the produce and consume functions are
 	// blocking
 	// create a new context
-	ctx := context.Background()
+	 ctx := context.Background()
 	// produce messages in a new go routine, since
 	// both the produce and consume functions are
-	// blocking
+	// blocking           
 
-    params := mux.Vars(r)
-
+     params := mux.Vars(r)
+    log.Println("mesenger swe phle")
     messanger.AllocateParkingProducer(ctx,params["carId"],params["ownerName"])
+    log.Println("produce k baad")
     consumerMessage := messanger.AllocateParkingConsumer(ctx)
+    log.Println("consumer k baad")
     carId := strings.Split(consumerMessage, " ")[0]
     OwnerName := strings.Split(consumerMessage, " ")[1]
-  
-  //  messanger.Produce(ctx,params["carId"],params["ownerName"])
-    
+
+    // carId := "mycAR"
+    // OwnerName := "ME"
     users, err := getFreePaking(carId,OwnerName)
     log.Println(users)
     if err != nil {
@@ -199,7 +197,7 @@ func DeallocateParking(w http.ResponseWriter, r *http.Request) {
 
 
 func DeallocateCarSpace(carId string)(string,error){
-    ctx := context.Background()
+    // ctx := context.Background()
     db := createConnection()
     deallocateStatus := ""
     defer db.Close()
@@ -221,7 +219,7 @@ func DeallocateCarSpace(carId string)(string,error){
         deallocateStatus="No car With the carId :" + carId
     } else {
         deallocateStatus="carId :" + carId + " left the parking slot"
-        messanger.DeAllocateParkingProducer(ctx,carId)
+        // messanger.DeAllocateParkingProducer(ctx,carId)
     }
     fmt.Printf("Total rows/record affected %v", rowsAffected)
     return deallocateStatus , err

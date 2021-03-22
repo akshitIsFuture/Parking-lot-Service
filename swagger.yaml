@@ -3,17 +3,47 @@ consumes:
 - application/json
 info:
   description: Documantation for Parking Api
-  title: of Parking api
+  title: Documantation of Parking api
   version: 1.0.0
 paths:
-  /api/user:
-    get:
-      description: Returns a paking status
-      operationId: slot
+  /parking/deallocate/{carId}/{ownerName}:
+    put:
+      operationId: AllocateParking 
       tags:
-      - allocate
-      - the
-      - pakring
+      - "Book Parking slot"
+      summary: "Book Parking slot"
+      description: "Book Parking slot"
+      responses:
+        "200":
+          description: "slot allocated"
+        "404":
+          description: "Page not found"
+    
+  /parking/allocate/{carId}/:
+    put:
+      operationId: DeAllocateParking 
+      tags:
+      - "Leave Parking slot"
+      summary: "Leave Parking slot"
+      description: "Leave Parking slot"
+      responses:
+        "200":
+          description: "carId :carX left the parking slot"
+        "404":
+          description: "Page not found"
+
+  /docs:
+    get:
+      operationId: SwaggerDocument 
+      tags:
+      - "Documantation of Parking api"
+      summary: "Documantation of Parking api"
+      description: "Documantation of Parking api"
+      responses:
+        "200":
+          description: "Documantation of Parking api"
+        "404":
+          description: "Page not found"
 produces:
 - applicatiom/json
 schemes:

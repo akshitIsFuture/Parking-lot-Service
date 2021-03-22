@@ -1,5 +1,11 @@
 FROM golang:latest
-RUN apt-get -y update
-RUN apt-get -y install git
 
-RUN git clone https://github.com/akshitIsFuture/Parking-lot-Service.git
+WORKDIR /app
+
+COPY . .
+
+RUN go get github.com/elastic/go-sysinfo/providers/linux@v1.1.1
+
+RUN  go build
+
+CMD ["./Parking-lot-Service"]

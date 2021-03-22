@@ -16,17 +16,21 @@ const (
 
 
 func AllocateParkingProducer(ctx context.Context,carId string,ownerName string) {
-
+	log.Println("bro plz allocate")
+         
 	l := log.New(os.Stdout, "kafka writer: ", 0)
 	// intialize the writer with the broker addresses, and the topic
  	w := kafka.NewWriter(kafka.WriterConfig{
 		Brokers: []string{brokerAddress},
 		Topic:   carEntryTopic,
+		BatchSize:    1,
+		BatchTimeout: 10000,
 		// assign the logger to the writer
 		Logger: l,
 	})
 
 
+		
 		// each kafka message has a key and value. The key is used
 		// to decide which partition (and consequently, which broker)
 		// the message gets published on
@@ -38,7 +42,9 @@ func AllocateParkingProducer(ctx context.Context,carId string,ownerName string) 
 		if err != nil {
 			panic("could not write message " + err.Error())
 		}
+		log.Println("bro plz allocate plzzz")
 
+	
 }
 
 func DeAllocateParkingProducer(ctx context.Context,carId string) {
@@ -90,6 +96,7 @@ func AllocateParkingConsumer(ctx context.Context) (string){
 		}
 		// after receiving the message, log its value
 		fmt.Println("received: ", string(msg.Value))
+		r.Close()
 		return string(msg.Value)
 
 }
