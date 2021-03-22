@@ -80,17 +80,12 @@ func GetFreePakingSlot(w http.ResponseWriter, r *http.Request) {
 	// both the produce and consume functions are
 	// blocking           
 
-     params := mux.Vars(r)
-    log.Println("mesenger swe phle")
+    params := mux.Vars(r)
     messanger.AllocateParkingProducer(ctx,params["carId"],params["ownerName"])
-    log.Println("produce k baad")
     consumerMessage := messanger.AllocateParkingConsumer(ctx)
-    log.Println("consumer k baad")
     carId := strings.Split(consumerMessage, " ")[0]
     OwnerName := strings.Split(consumerMessage, " ")[1]
 
-    // carId := "mycAR"
-    // OwnerName := "ME"
     users, err := getFreePaking(carId,OwnerName)
     log.Println(users)
     if err != nil {
@@ -135,8 +130,6 @@ func getFreePaking(carId string, ownerName string) (string, error) {
             log.Fatalf("Unable to sc an the row. %v", err)
         }
 
-        
-        // append the user in the users slice
         users = append(users, user)
         log.Println(user.ParkingId)
         UpdateParkingSlot(user.ParkingId,carId,ownerName)
@@ -148,8 +141,7 @@ func getFreePaking(carId string, ownerName string) (string, error) {
     } else {
         slotStatus = "slot allocated"
     }
- 
-    // return empty user on error
+
     return slotStatus, err
 }
 
@@ -187,7 +179,7 @@ func DeallocateParking(w http.ResponseWriter, r *http.Request) {
     w.Header().Set("Access-Control-Allow-Methods", "PUT")
     w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-    // get the userid from the request params, key is "id"
+    // get the carId from the request params, key is "id"
     params := mux.Vars(r)
     users,_:=DeallocateCarSpace(params["id"])
     // send all the users as response
@@ -197,7 +189,7 @@ func DeallocateParking(w http.ResponseWriter, r *http.Request) {
 
 
 func DeallocateCarSpace(carId string)(string,error){
-    // ctx := context.Background()
+    ctx := context.Background()
     db := createConnection()
     deallocateStatus := ""
     defer db.Close()
@@ -219,7 +211,7 @@ func DeallocateCarSpace(carId string)(string,error){
         deallocateStatus="No car With the carId :" + carId
     } else {
         deallocateStatus="carId :" + carId + " left the parking slot"
-        // messanger.DeAllocateParkingProducer(ctx,carId)
+        messanger.DeAllocateParkingProducer(ctx,carId)
     }
     fmt.Printf("Total rows/record affected %v", rowsAffected)
     return deallocateStatus , err
